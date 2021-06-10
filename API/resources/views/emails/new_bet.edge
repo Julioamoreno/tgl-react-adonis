@@ -1,0 +1,11 @@
+<strong>Parabéns {{ name }}</strong>
+
+<p>Jogos realizados com sucesso, total de <b>{{ valor }}</b>.</p>
+
+@if(games)
+    <h2>Detalhes</h2>
+@end
+@each( game in games)
+    <p> Jogo {{game.game.type}}, foi feito com os números: {{ game.numbers }}, valor {{game.price}} </p>
+    
+@end
