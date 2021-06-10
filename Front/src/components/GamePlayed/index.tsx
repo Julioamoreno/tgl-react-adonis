@@ -12,7 +12,7 @@ import {
 const GamePlayed: React.FC<{
 	color: string;
 	type: string;
-	gameNumbers: Array<string>;
+	numbers: string;
 	gamePrice: string;
 }> = (props) => {
 	return (
@@ -20,7 +20,7 @@ const GamePlayed: React.FC<{
 			<div></div>
 			<Col color={props?.color}>
 				<Row>
-					<ListNumber>{props.gameNumbers.join(', ')}</ListNumber>
+					<ListNumber>{props.numbers}</ListNumber>
 				</Row>
 
 				<Row>

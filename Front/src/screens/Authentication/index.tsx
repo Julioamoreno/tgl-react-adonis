@@ -46,6 +46,10 @@ const Authentication: React.FC = () => {
 			email: response.data.user.email,
 			token: response.data.token,
 		};
+		localStorage.setItem(
+			'@tgl:recentGames',
+			JSON.stringify(response.data.user.bets)
+		);
 		goHomePage(user);
 	};
 

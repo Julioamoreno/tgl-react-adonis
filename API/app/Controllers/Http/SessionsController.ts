@@ -8,7 +8,7 @@ export default class SessionsController {
     const { email, password } = request.all()
 
     const { token } = await auth.attempt(email, password)
-    const user = await User.query().where({ email }).preload('bets')
+    const user = await User.query().where({ email }).preload('bets').firstOrFail()
     return { user, token }
   }
 }

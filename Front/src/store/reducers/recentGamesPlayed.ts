@@ -12,7 +12,7 @@ const slice = createSlice({
 	reducers: {
 		saveGames(state, action) {
 			state.push({
-				selectedNumbers: action.payload.selectedNumbers,
+				numbers: action.payload.numbers,
 				date: action.payload.date,
 				type: action.payload.type,
 				price: action.payload.price,

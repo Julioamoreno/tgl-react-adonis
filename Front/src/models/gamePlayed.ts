@@ -1,6 +1,6 @@
 interface GamePlayed
 	extends Array<{
-		selectedNumbers: Array<string>;
+		numbers: string;
 		date: string;
 		type: string;
 		price: number;

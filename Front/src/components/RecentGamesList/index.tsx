@@ -39,7 +39,7 @@ const RecentGamesList: React.FC = () => {
 					key={idx}
 					color={gamePlayed.color}
 					type={gamePlayed.type}
-					gameNumbers={gamePlayed.selectedNumbers}
+					numbers={gamePlayed.numbers}
 					gamePrice={`${gamePlayed.date} - (${gamePlayed.price.toLocaleString(
 						'pt-BR',
 						{

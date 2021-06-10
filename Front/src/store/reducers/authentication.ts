@@ -25,9 +25,6 @@ const slice = createSlice({
 			state.user = action.payload.user;
 			localStorage.setItem('@tgl:authenticate', 'true');
 			localStorage.setItem('@tgl:user', JSON.stringify(state.user));
-
-			//passar no dispatch 'bets' com o retorno da API
-			// localStorage.setItem('@tgl:recent', JSON.stringify(action.payload.bets));
 		},
 		logout(state) {
 			state.authenticated = false;
