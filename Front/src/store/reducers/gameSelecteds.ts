@@ -4,7 +4,14 @@ interface StateGameSelected {
 	gameType?: null | string;
 }
 
-const initialState = { gameType: null } as StateGameSelected;
+const availableGamesLocal = localStorage.getItem('@tgl:availableGames');
+let initialState;
+const game = JSON.parse(availableGamesLocal!);
+if (game?.length > 0) {
+	initialState = { gameType: game[0].type } as StateGameSelected;
+} else {
+	initialState = {} as StateGameSelected;
+}
 
 const slice = createSlice({
 	name: 'GameSelected',

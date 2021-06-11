@@ -1,19 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface StateGameSelected {
-	gameType: null | string;
 	numbersSelected: Array<string>;
+	typeMessage: string | null;
+	message: string | null;
+	type: null | string;
 	price: number;
-	maxNumber: number;
+	max_number: number;
 	range: number;
 	color: string;
-	message: string | null;
-	typeMessage: string | null;
-	minCartValue: number;
+	min_cart_value: number;
+	description: string;
 }
 
-const gamePlayedLocal = localStorage.getItem('@tgl:gamePlayed');
-const initialState = JSON.parse(gamePlayedLocal!) || ({} as StateGameSelected);
+const gamePlayedLocalString = localStorage.getItem('@tgl:gamePlayed');
+let initialState;
+const gamePlayedLocal = JSON.parse(gamePlayedLocalString!) as StateGameSelected;
+if (gamePlayedLocal) {
+	initialState = gamePlayedLocal;
+} else {
+	const initialGameAvailable = localStorage.getItem('@tgl:availableGames');
+	if (initialGameAvailable) {
+		const initialGame = JSON.parse(
+			initialGameAvailable!
+		) as Array<StateGameSelected>;
+		initialState = { ...initialGame[0], numbersSelected: [] };
+	} else {
+		initialState = {} as StateGameSelected;
+	}
+}
 
 const getNumberAvailable = (state: StateGameSelected) => {
 	let numbers: Array<string> = [];
@@ -38,24 +53,26 @@ const slice = createSlice({
 	initialState,
 	reducers: {
 		setGamePlayed(state, action) {
-			const isEmpty = !state.gameType;
-			if (isEmpty) {
-				state.message = 'Selecione um tipo de jogo';
-				state.typeMessage = 'aviso';
-				return;
-			}
-			state.gameType = action.payload.game.type;
-			state.price = action.payload.price;
+			// const isEmpty = !state.type;
+			// if (isEmpty) {
+			// 	state.message = 'Selecione um tipo de jogo';
+			// 	state.typeMessage = 'aviso';
+			// 	return;
+			// }
+			state.type = action.payload.game.type;
+			state.price = action.payload.game.price;
 			state.range = action.payload.game.range;
-			state.maxNumber = action.payload.game.max_number;
+			state.max_number = action.payload.game.max_number;
+			state.min_cart_value = action.payload.game.min_cart_value;
 			state.color = action.payload.game.color;
+			state.description = action.payload.game.description;
 			state.numbersSelected = [];
 			localStorage.setItem('@tgl:gamePlayed', JSON.stringify(state));
 		},
 		setNumberSelected(state, action) {
-			const remaining = state.maxNumber - state.numbersSelected.length;
+			const remaining = state.max_number - state.numbersSelected.length;
 			if (
-				state.maxNumber > state.numbersSelected.length &&
+				state.max_number > state.numbersSelected.length &&
 				!state.numbersSelected.includes(action.payload.numbersSelected)
 			) {
 				state.numbersSelected.push(action.payload.numbersSelected);
@@ -78,14 +95,14 @@ const slice = createSlice({
 			}
 		},
 		completeGame(state) {
-			const isEmpty = !state.gameType;
+			const isEmpty = !state.type;
 			if (isEmpty) {
 				state.message = 'Selecione um tipo de jogo';
 				state.typeMessage = 'aviso';
 				return;
 			}
 			const numbersAvailable = getNumberAvailable(state);
-			const remaining = state.maxNumber - state.numbersSelected.length;
+			const remaining = state.max_number - state.numbersSelected.length;
 			if (remaining === 0) {
 				state.message = 'O jogo já está completo';
 				state.typeMessage = 'aviso';
@@ -106,7 +123,6 @@ const slice = createSlice({
 		},
 		clearGame(state) {
 			state.numbersSelected = [];
-			// state.complete = false;
 		},
 		setMessage(state, action) {
 			state.message = action.payload.message;

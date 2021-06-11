@@ -24,7 +24,7 @@ const Cart: React.FC = () => {
 	const dispatch = useDispatch();
 	const games: GameCartModel = useSelector((state: State) => state.cartGame);
 	const { total } = useSelector((state: State) => state.cartTotal);
-	const { minCartValue } = useSelector((state: State) => state.gamePlayed);
+	const { min_cart_value } = useSelector((state: State) => state.gamePlayed);
 
 	const deleteGame = (id: number, price: number) => {
 		dispatch(cartGameAction.deleteItemChart({ id }));
@@ -32,13 +32,13 @@ const Cart: React.FC = () => {
 	};
 
 	const saveGamesCart = () => {
-		const minValue = minCartValue.toLocaleString('pt-BR', {
+		const minValue = min_cart_value.toLocaleString('pt-BR', {
 			minimumFractionDigits: 2,
 			style: 'currency',
 			currency: 'BRL',
 		});
 
-		if (total < minCartValue) {
+		if (total < min_cart_value) {
 			return dispatch(
 				gamePlayedAction.setMessage({
 					message: `Valor mínimo para salvar é ${minValue}`,

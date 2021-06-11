@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
-import { authenticationAction } from '../../store';
+import {
+	authenticationAction,
+	gamesAvailableAction,
+	recentGamesPlayedAction,
+} from '../../store';
 
 import CardAuthentication from '../../components/CardAuthentication';
 import CardRegistration from '../../components/CardRegistration';
@@ -12,7 +16,7 @@ import User from '../../models/user';
 
 import { AuthenticationGrid, Col8, Title, ButtonFor, Lottery } from './styles';
 
-import axios from '../../API';
+import API from '../../API';
 import { AxiosResponse } from 'axios';
 
 const Authentication: React.FC = () => {
@@ -30,7 +34,7 @@ const Authentication: React.FC = () => {
 	};
 
 	const handleResetPassword = async (email: string) => {
-		const response = await axios.post('/forgotpassword', {
+		const response = await API.post('/forgotpassword', {
 			email,
 			link: process.env.REACT_APP_FORGOT_PASSWORD_LINK,
 		});
@@ -40,16 +44,25 @@ const Authentication: React.FC = () => {
 		}
 	};
 
-	const handleSuccessResponse = (response: AxiosResponse) => {
+	const getAllGames = async () => {
+		const response = await API.get('/games');
+		if (response.status === 200)
+			dispatch(gamesAvailableAction.saveGames({ games: response.data }));
+	};
+
+	const saveRecentsBets = async (bets: Array<{}>) => {
+		bets.map((bet) => dispatch(recentGamesPlayedAction.saveGames(bet)));
+	};
+
+	const handleSuccessResponse = async (response: AxiosResponse) => {
 		const user: User = {
 			name: response.data.user.name,
 			email: response.data.user.email,
 			token: response.data.token,
 		};
-		localStorage.setItem(
-			'@tgl:recentGames',
-			JSON.stringify(response.data.user.bets)
-		);
+
+		saveRecentsBets(response.data.user.bets);
+		await getAllGames();
 		goHomePage(user);
 	};
 
@@ -58,7 +71,7 @@ const Authentication: React.FC = () => {
 		email: string,
 		password: string
 	) => {
-		const response = await axios.post('/user', {
+		const response = await API.post('/user', {
 			name,
 			email,
 			password,
@@ -71,7 +84,7 @@ const Authentication: React.FC = () => {
 	};
 
 	const handleLogin = async (email: string, password: string) => {
-		const response = await axios.post('/login', {
+		const response = await API.post('/login', {
 			email,
 			password,
 		});

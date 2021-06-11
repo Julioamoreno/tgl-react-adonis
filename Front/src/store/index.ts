@@ -7,6 +7,7 @@ import gamePlayed from './reducers/gamePlayed';
 import cartGame from './reducers/cartGame';
 import cartTotal from './reducers/cartTotal';
 import authentication from './reducers/authentication';
+import gamesAvailable from './reducers/gamesAvailable';
 
 const store = configureStore({
 	reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
 		cartGame: cartGame.reducer,
 		cartTotal: cartTotal.reducer,
 		authentication: authentication.reducer,
+		gamesAvailable: gamesAvailable.reducer,
 	},
 });
 
@@ -29,5 +31,6 @@ export const gamePlayedAction = gamePlayed.actions;
 export const cartGameAction = cartGame.actions;
 export const cartTotalAction = cartTotal.actions;
 export const authenticationAction = authentication.actions;
+export const gamesAvailableAction = gamesAvailable.actions;
 
 export default store;

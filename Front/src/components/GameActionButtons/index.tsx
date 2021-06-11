@@ -22,8 +22,6 @@ const GameActionButtons: React.FC = (props) => {
 
 	const clearGame = () => {
 		if (game.numbersSelected.length === 0) {
-			console.log(game.numbersSelected.length);
-
 			dispatch(
 				gamePlayedAction.setMessage({
 					message: 'O jogo já está limpo',
@@ -37,7 +35,7 @@ const GameActionButtons: React.FC = (props) => {
 		dispatch(gamePlayedAction.completeGame());
 	};
 	const addToCart = () => {
-		if (game.numbersSelected.length < game.maxNumber) {
+		if (game.numbersSelected.length < game.max_number) {
 			return dispatch(
 				gamePlayedAction.setMessage({
 					message: 'Termine de completar o jogo para adicionar ao carrinho',
@@ -47,11 +45,11 @@ const GameActionButtons: React.FC = (props) => {
 		}
 		dispatch(
 			cartGameAction.newItemCart({
-				type: game.gameType,
+				type: game.type,
 				numbersSelected: game.numbersSelected,
 				price: game.price,
 				color: game.color,
-				minCartValue: game.minCartValue,
+				minCartValue: game.min_cart_value,
 			})
 		);
 		dispatch(cartTotalAction.increment({ price: game.price }));

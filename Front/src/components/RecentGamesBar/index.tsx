@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 import GameButtonsList from '../GameButtonsList';
 
 import { State, recentsGameSelectedAction } from '../../store';
-import GamesModel from '../../models/games';
 import GameModel from '../../models/game';
 
 import arrowIcon from '../../assets/icons/arrow-right-green.svg';
@@ -18,7 +17,7 @@ import {
 	Arrow,
 } from './styles';
 
-const RecentGamesBar: React.FC<{ allGames: GamesModel }> = (props) => {
+const RecentGamesBar: React.FC = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const gameType = useSelector((state: State) => state.recents.type) || '';
@@ -39,7 +38,6 @@ const RecentGamesBar: React.FC<{ allGames: GamesModel }> = (props) => {
 				<GameButtonsList
 					selectedButton={gameType}
 					selectGameHandle={selectGameHandle}
-					allGames={props.allGames}
 				/>
 			</Filter>
 

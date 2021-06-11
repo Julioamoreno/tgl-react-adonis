@@ -10,7 +10,7 @@ import { EmptyListMessage } from './styles';
 import GamePlayedModel from '../../models/gamePlayed';
 
 const RecentGamesList: React.FC = () => {
-	const gameType = useSelector((state: State) => state.recents.type) || '';
+	const gameType = useSelector((state: State) => state.recents.type);
 	const allGamesPlayed: GamePlayedModel = useSelector(
 		(state: State) => state.recentGames
 	);
