@@ -1,10 +1,12 @@
 interface GamePlayed
 	extends Array<{
 		numbers: string;
-		date: string;
-		type: string;
+		created_at: string;
 		price: number;
-		color: string;
+		game: {
+			type: string;
+			color: string;
+		};
 	}> {}
 
 export default GamePlayed;

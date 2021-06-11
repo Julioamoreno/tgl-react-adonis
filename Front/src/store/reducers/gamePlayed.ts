@@ -38,11 +38,11 @@ const slice = createSlice({
 	initialState,
 	reducers: {
 		setGamePlayed(state, action) {
-			state.gameType = action.payload.gameType;
+			state.gameType = action.payload.game.type;
 			state.price = action.payload.price;
-			state.range = action.payload.range;
-			state.maxNumber = action.payload.maxNumber;
-			state.color = action.payload.color;
+			state.range = action.payload.game.range;
+			state.maxNumber = action.payload.game.max_number;
+			state.color = action.payload.game.color;
 			state.numbersSelected = [];
 			localStorage.setItem('@tgl:gamePlayed', JSON.stringify(state));
 		},

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import moment from 'moment';
 
 import GamePlayed from '../GamePlayed';
 import { State } from '../../store/index';
@@ -23,7 +24,7 @@ const RecentGamesList: React.FC = () => {
 			return;
 		}
 		const array = allGamesPlayed.filter(
-			(gamePlayed) => gameType === gamePlayed.type
+			(gamePlayed) => gameType === gamePlayed.game.type
 		);
 		setGamePlayedFiltered(array);
 	}, [gameType, allGamesPlayed]);
@@ -37,17 +38,16 @@ const RecentGamesList: React.FC = () => {
 			{gamePlayedFiltered.map((gamePlayed, idx) => (
 				<GamePlayed
 					key={idx}
-					color={gamePlayed.color}
-					type={gamePlayed.type}
+					color={gamePlayed.game.color}
+					type={gamePlayed.game.type}
 					numbers={gamePlayed.numbers}
-					gamePrice={`${gamePlayed.date} - (${gamePlayed.price.toLocaleString(
-						'pt-BR',
-						{
-							minimumFractionDigits: 2,
-							style: 'currency',
-							currency: 'BRL',
-						}
-					)})`}
+					gamePrice={`${moment(gamePlayed.created_at).format(
+						'DD/MM/YYYY'
+					)} - (${gamePlayed.price.toLocaleString('pt-BR', {
+						minimumFractionDigits: 2,
+						style: 'currency',
+						currency: 'BRL',
+					})})`}
 				/>
 			))}
 		</>
