@@ -38,6 +38,12 @@ const slice = createSlice({
 	initialState,
 	reducers: {
 		setGamePlayed(state, action) {
+			const isEmpty = !state.gameType;
+			if (isEmpty) {
+				state.message = 'Selecione um tipo de jogo';
+				state.typeMessage = 'aviso';
+				return;
+			}
 			state.gameType = action.payload.game.type;
 			state.price = action.payload.price;
 			state.range = action.payload.game.range;
@@ -72,6 +78,12 @@ const slice = createSlice({
 			}
 		},
 		completeGame(state) {
+			const isEmpty = !state.gameType;
+			if (isEmpty) {
+				state.message = 'Selecione um tipo de jogo';
+				state.typeMessage = 'aviso';
+				return;
+			}
 			const numbersAvailable = getNumberAvailable(state);
 			const remaining = state.maxNumber - state.numbersSelected.length;
 			if (remaining === 0) {
