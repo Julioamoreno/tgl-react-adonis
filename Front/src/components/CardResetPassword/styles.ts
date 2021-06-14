@@ -14,22 +14,30 @@ export const Card = styled.div`
 	width: 352px;
 	height: ${(props) => (props.theme === 'small' ? '194px' : '337px')};
 	background: #ffffff 0% 0% no-repeat padding-box;
-	box-shadow: 2px 15px 12px #00000014;
+	box-shadow: 0px 0px 20px 3px #0000000f;
 	border: 1px solid #dddddd;
-	border-radius: 15px;
+	border-radius: 20px;
 `;
 
 export const Input = styled.input`
 	font: italic normal bold 17px/70px arial;
 	letter-spacing: 0px;
 	padding-left: 20px;
-	width: 330px;
+	width: 325px;
+	height: 80px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	padding-left: 25px;
 	border: 0;
-	border-bottom: 1px #dedede solid;
+	border-bottom: 2px solid #ebebeb;
 	border-top-left-radius: 25px;
 	border-top-right-radius: 25px;
+	:focus {
+		outline: none;
+	}
 	::placeholder {
 		color: #9d9d9d;
+		padding-top: 10px;
 	}
 `;
 
@@ -51,10 +59,17 @@ export const BtnLogin = styled.div`
 		cursor: pointer;
 		align-items: center;
 		justify-content: center;
+		height: 120px;
 		padding-bottom: 15px;
 		border-bottom: 2px #dedede solid;
-		border-bottom-left-radius: 25px;
-		border-bottom-right-radius: 25px;
+		border-bottom-left-radius: 20px;
+		border-bottom-right-radius: 20px;
+	}
+	svg {
+		padding-left: 10px;
+		font-weight: 300;
+		width: 50px;
+		height: 50px;
 	}
 `;
 export const BtnSignUp = styled.button`
@@ -78,7 +93,7 @@ export const Col4 = styled.div`
 	align-items: center;
 	flex-direction: column;
 	margin-top: 115px;
-	@media (max-width: 840px) {
+	@media (max-width: 1024px) {
 		width: 99%;
 	}
 `;

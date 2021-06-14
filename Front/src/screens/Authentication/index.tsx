@@ -113,7 +113,6 @@ const Authentication: React.FC = () => {
 			}
 		} catch (err) {
 			if (err.response.status === 422) {
-				console.log({ ...err });
 				setError(err.response.data.errors[0].message);
 				return toast.error('Email já cadastrado');
 			} else {

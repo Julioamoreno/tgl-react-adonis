@@ -1,18 +1,21 @@
 import styled from 'styled-components';
 
 export const AuthenticationGrid = styled.div`
+	min-height: 100vh;
 	width: 90vw;
 	max-width: 1180px;
 	margin-top: 20px;
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
-	align-content: flex-end;
+	align-content: flex-start;
 	align-items: flex-start;
 	margin: auto 0;
-	@media (max-width: 840px) {
+	@media (max-width: 1024px) {
+		height: auto;
 		width: 99%;
-		flex-direction: column;
+		flex-wrap: wrap;
+		flex-direction: row;
 		align-items: center;
 		align-content: center;
 	}
@@ -57,7 +60,7 @@ export const Col8 = styled.div`
 	justify-content: space-around;
 	align-items: center;
 	flex-direction: column;
-	@media (max-width: 960px) {
+	@media (max-width: 1024px) {
 		width: 60%;
 	}
 `;
