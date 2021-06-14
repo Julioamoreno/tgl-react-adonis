@@ -6,6 +6,7 @@ import {
 	Card,
 	Input,
 	BtnLogin,
+	ErrorMessage,
 	BtnResetPassword,
 	BtnSignUp,
 } from './styles';
@@ -13,6 +14,8 @@ import {
 const CardAuthentication: React.FC<{
 	handlePage: (name: string) => void;
 	login: (email: string, password: string) => void;
+	error: string | null | undefined;
+	clearError: () => void;
 }> = (props) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -24,15 +27,18 @@ const CardAuthentication: React.FC<{
 					type='email'
 					placeholder='Email'
 					value={email}
+					onFocus={props.clearError}
 					onChange={(event) => setEmail(event?.target.value)}
 				/>
 				<Input
 					type='password'
 					placeholder='Password'
 					value={password}
+					onFocus={props.clearError}
 					onChange={(event) => setPassword(event?.target.value)}
 				/>
 				<BtnLogin>
+					{props.error && <ErrorMessage>{props.error}</ErrorMessage>}
 					<BtnResetPassword onClick={() => props.handlePage('reset')}>
 						I forget my password
 					</BtnResetPassword>

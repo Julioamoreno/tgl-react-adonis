@@ -8,6 +8,9 @@ import {
 	recentGamesPlayedAction,
 } from '../../store';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import CardAuthentication from '../../components/CardAuthentication';
 import CardRegistration from '../../components/CardRegistration';
 import CardResetPassword from '../../components/CardResetPassword';
@@ -23,6 +26,7 @@ const Authentication: React.FC = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const [card, setCard] = useState('default');
+	const [error, setError] = useState<string | null>();
 
 	const handleNewPage = (name: string) => {
 		setCard(name);
@@ -40,7 +44,7 @@ const Authentication: React.FC = () => {
 		});
 
 		if (response.status === 200) {
-			console.log(response.data.message);
+			toast.success('Uma mensagem foi enviada para seu email');
 		}
 	};
 
@@ -66,6 +70,11 @@ const Authentication: React.FC = () => {
 		goHomePage(user);
 	};
 
+	const handleErrorResponse = () => {
+		setError('Email ou Senha incorretos');
+		return toast.error('Email ou Senha incorretos, tente novamente.');
+	};
+
 	const handleRegister = async (
 		name: string,
 		email: string,
@@ -84,18 +93,29 @@ const Authentication: React.FC = () => {
 	};
 
 	const handleLogin = async (email: string, password: string) => {
-		const response = await API.post('/login', {
-			email,
-			password,
-		});
+		if (!email || !password) {
+			return toast.error('Preencha todos os campos');
+		}
+		try {
+			const response = await API.post('/login', {
+				email,
+				password,
+			});
 
-		if (response.status === 200) {
-			handleSuccessResponse(response);
+			if (response.status === 200) {
+				return handleSuccessResponse(response);
+			}
+		} catch (err) {
+			if (err.response.status === 400) {
+				handleErrorResponse();
+				return;
+			}
 		}
 	};
 
 	return (
 		<AuthenticationGrid>
+			<ToastContainer />
 			<Col8>
 				<Title>The Greatest App</Title>
 				<ButtonFor>for</ButtonFor>
@@ -116,7 +136,14 @@ const Authentication: React.FC = () => {
 			)}
 
 			{card === 'default' && (
-				<CardAuthentication handlePage={handleNewPage} login={handleLogin} />
+				<CardAuthentication
+					handlePage={handleNewPage}
+					login={handleLogin}
+					error={error}
+					clearError={() => {
+						setError(null);
+					}}
+				/>
 			)}
 		</AuthenticationGrid>
 	);

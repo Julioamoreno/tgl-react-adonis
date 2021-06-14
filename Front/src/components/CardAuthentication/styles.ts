@@ -29,6 +29,14 @@ export const Input = styled.input`
 	}
 `;
 
+export const ErrorMessage = styled.p`
+	color: red;
+	margin: 0;
+	padding-top: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+`;
 export const BtnResetPassword = styled.p`
 	font: italic normal normal 17px arial;
 	letter-spacing: 0px;
