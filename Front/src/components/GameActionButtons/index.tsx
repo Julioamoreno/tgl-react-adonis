@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../../store';
 
 import { gamePlayedAction, cartGameAction, cartTotalAction } from '../../store';
-import Toast from '../Toast';
+import { toast } from 'react-toastify';
 
 import {
 	RecentBarContainer,
@@ -16,31 +16,23 @@ import {
 const GameActionButtons: React.FC = (props) => {
 	const dispatch = useDispatch();
 	const game = useSelector((state: State) => state.gamePlayed);
-	const { message, typeMessage } = useSelector(
-		(state: State) => state.gamePlayed
-	);
 
 	const clearGame = () => {
 		if (game.numbersSelected.length === 0) {
-			dispatch(
-				gamePlayedAction.setMessage({
-					message: 'O jogo já está limpo',
-					typeMessage: 'aviso',
-				})
-			);
+			toast.warning('O jogo já está limpo');
 		}
 		dispatch(gamePlayedAction.clearGame());
 	};
 	const completeGameHandle = () => {
+		if (game.numbersSelected.length === game.max_number) {
+			return toast.warning('O jogo já está completo');
+		}
 		dispatch(gamePlayedAction.completeGame());
 	};
 	const addToCart = () => {
 		if (game.numbersSelected.length < game.max_number) {
-			return dispatch(
-				gamePlayedAction.setMessage({
-					message: 'Termine de completar o jogo para adicionar ao carrinho',
-					typeMessage: 'aviso',
-				})
+			return toast.warning(
+				'Termine de completar o jogo para adicionar ao carrinho.'
 			);
 		}
 		dispatch(
@@ -58,7 +50,6 @@ const GameActionButtons: React.FC = (props) => {
 
 	return (
 		<RecentBarContainer>
-			{message && <Toast message={message!} type={typeMessage!} />}
 			<ContainerLeft>
 				<ButtonLight onClick={completeGameHandle}> Complete game </ButtonLight>
 				<ButtonLight onClick={clearGame}> Clear game </ButtonLight>

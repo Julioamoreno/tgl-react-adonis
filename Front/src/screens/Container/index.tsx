@@ -3,6 +3,9 @@ import Navbar from '../../components/Navbar';
 
 import { useDispatch } from 'react-redux';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import API from '../../API';
 import { gamesAvailableAction, gamePlayedAction } from '../../store';
 
@@ -27,6 +30,7 @@ const NavbarScreen: React.FC = (props) => {
 	return (
 		<Container>
 			<Navbar />
+			<ToastContainer />
 			<Content>{props.children}</Content>
 		</Container>
 	);

@@ -3,12 +3,12 @@ import React from 'react';
 import GameCartModel from '../../models/gameCart';
 import NewGamePlayed from '../NewGamePlayed';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { State } from '../../store';
 import {
 	cartGameAction,
 	cartTotalAction,
 	recentGamesPlayedAction,
-	gamePlayedAction,
 } from '../../store/index';
 
 import arrowIcon from '../../assets/icons/arrow-right-green-light.svg';
@@ -39,12 +39,7 @@ const Cart: React.FC = () => {
 		});
 
 		if (total < min_cart_value) {
-			return dispatch(
-				gamePlayedAction.setMessage({
-					message: `Valor mínimo para salvar é ${minValue}`,
-					typeMessage: 'aviso',
-				})
-			);
+			return toast.error(`Valor mínimo para salvar é ${minValue}`);
 		}
 		const date = new Date();
 		const dateNow = `${date.getDate().toString().padStart(2, '0')}/${(
@@ -66,12 +61,7 @@ const Cart: React.FC = () => {
 			return dispatch(cartGameAction.clearCart());
 		});
 		dispatch(cartTotalAction.clear());
-		dispatch(
-			gamePlayedAction.setMessage({
-				message: 'Jogo salvo com sucesso.',
-				typeMessage: 'sucesso',
-			})
-		);
+		toast.success('Jogo salvo com sucesso.');
 	};
 
 	return (
