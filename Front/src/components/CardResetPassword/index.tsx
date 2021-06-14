@@ -1,20 +1,32 @@
 import React, { useState } from 'react';
 
-import { Col4, CardTitle, Card, Input, BtnLogin, BtnSignUp } from './styles';
+import {
+	Col4,
+	CardTitle,
+	ErrorMessage,
+	Card,
+	Input,
+	BtnLogin,
+	BtnSignUp,
+} from './styles';
 
 const ResetPassword: React.FC<{
 	handlePage: (name: string) => void;
 	resetPassword: (email: string) => void;
+	error: string | null | undefined;
+	clearError: () => void;
 }> = (props) => {
 	const [email, setEmail] = useState('');
 	return (
 		<Col4>
 			<CardTitle>Reset Password</CardTitle>
+			{props.error && <ErrorMessage> {props.error} </ErrorMessage>}
 			<Card theme='small'>
 				<Input
 					type='email'
 					placeholder='Email'
 					value={email}
+					onFocus={props.clearError}
 					onChange={(event) => setEmail(event.target.value)}
 				/>
 				<BtnLogin onClick={() => props.resetPassword(email)}>

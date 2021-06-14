@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
 
-import { Col4, CardTitle, Card, Input, BtnLogin, BtnSignUp } from './styles';
+import {
+	Col4,
+	CardTitle,
+	ErrorMessage,
+	Card,
+	Input,
+	BtnLogin,
+	BtnSignUp,
+} from './styles';
 
 const Registration: React.FC<{
 	handlePage: (name: string) => void;
 	register: (name: string, email: string, password: string) => void;
+	error: string | null | undefined;
+	clearError: () => void;
 }> = (props) => {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
@@ -13,24 +23,28 @@ const Registration: React.FC<{
 	return (
 		<Col4>
 			<CardTitle>Registration</CardTitle>
+			{props.error && <ErrorMessage> {props.error} </ErrorMessage>}
 			<Card>
 				<Input
 					type='text'
 					placeholder='Name'
 					value={name}
 					onChange={(event) => setName(event.target.value)}
+					onFocus={props.clearError}
 				/>
 				<Input
 					type='email'
 					placeholder='Email'
 					value={email}
 					onChange={(event) => setEmail(event.target.value)}
+					onFocus={props.clearError}
 				/>
 				<Input
 					type='password'
 					placeholder='Password'
 					value={password}
 					onChange={(event) => setPassword(event.target.value)}
+					onFocus={props.clearError}
 				/>
 				<BtnLogin>
 					<button onClick={() => props.register(name, email, password)}>

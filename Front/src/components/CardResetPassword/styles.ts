@@ -6,6 +6,10 @@ export const CardTitle = styled.h2`
 	margin: 0;
 `;
 
+export const ErrorMessage = styled.p`
+	color: red;
+`;
+
 export const Card = styled.div`
 	width: 352px;
 	height: ${(props) => (props.theme === 'small' ? '194px' : '337px')};

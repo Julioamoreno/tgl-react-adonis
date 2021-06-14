@@ -30,6 +30,7 @@ const Authentication: React.FC = () => {
 
 	const handleNewPage = (name: string) => {
 		setCard(name);
+		setError(null);
 	};
 
 	const goHomePage = (user: User) => {
@@ -38,13 +39,26 @@ const Authentication: React.FC = () => {
 	};
 
 	const handleResetPassword = async (email: string) => {
-		const response = await API.post('/forgotpassword', {
-			email,
-			link: process.env.REACT_APP_FORGOT_PASSWORD_LINK,
-		});
+		const regexEmail = /\S+@\S+\.\S+/;
+		const isValidEmail = regexEmail.test(email);
+		if (!email || !isValidEmail) {
+			return setError('Digite um email valido');
+		}
+		try {
+			const response = await API.post('/forgotpassword', {
+				email,
+				link: process.env.REACT_APP_FORGOT_PASSWORD_LINK,
+			});
 
-		if (response.status === 200) {
-			toast.success('Uma mensagem foi enviada para seu email');
+			if (response.status === 200) {
+				toast.success('Uma mensagem foi enviada para seu email');
+			}
+		} catch (err) {
+			console.log({ ...err });
+			if (err.response.status === 403) {
+				setError('Email não cadastrado');
+				return toast.error('Verifique o email digitado');
+			}
 		}
 	};
 
@@ -80,21 +94,40 @@ const Authentication: React.FC = () => {
 		email: string,
 		password: string
 	) => {
-		const response = await API.post('/user', {
-			name,
-			email,
-			password,
-			password_confirmation: password,
-		});
+		const regexEmail = /\S+@\S+\.\S+/;
+		const isValidEmail = regexEmail.test(email);
+		if (!name || !email || !password || !isValidEmail) {
+			setError('Verifique os campos digitados');
+			return toast.error('Verifique os campos digitados');
+		}
+		try {
+			const response = await API.post('/user', {
+				name,
+				email,
+				password,
+				password_confirmation: password,
+			});
 
-		if (response.status === 200) {
-			handleSuccessResponse(response);
+			if (response.status === 200) {
+				handleSuccessResponse(response);
+			}
+		} catch (err) {
+			if (err.response.status === 422) {
+				console.log({ ...err });
+				setError(err.response.data.errors[0].message);
+				return toast.error('Email já cadastrado');
+			} else {
+				setError('Ocorreu um erro');
+				return toast.error('Ocorreu um erro');
+			}
 		}
 	};
 
 	const handleLogin = async (email: string, password: string) => {
-		if (!email || !password) {
-			return toast.error('Preencha todos os campos');
+		const regexEmail = /\S+@\S+\.\S+/;
+		const isValidEmail = regexEmail.test(email);
+		if (!email || !password || !isValidEmail) {
+			return toast.error('Verifique os campos digitados');
 		}
 		try {
 			const response = await API.post('/login', {
@@ -125,6 +158,10 @@ const Authentication: React.FC = () => {
 				<CardResetPassword
 					handlePage={handleNewPage}
 					resetPassword={handleResetPassword}
+					error={error}
+					clearError={() => {
+						setError(null);
+					}}
 				/>
 			)}
 
@@ -132,6 +169,10 @@ const Authentication: React.FC = () => {
 				<CardRegistration
 					handlePage={handleNewPage}
 					register={handleRegister}
+					error={error}
+					clearError={() => {
+						setError(null);
+					}}
 				/>
 			)}
 
