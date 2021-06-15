@@ -51,19 +51,23 @@ const Cart: React.FC = () => {
 		if (total < min_cart_value) {
 			return toast.error(`Valor mínimo para salvar é ${minValue}`);
 		}
-		const response = await API.post(
-			'/bets',
-			{
-				bet: [...games],
-			},
-			{ headers: { Authorization: `Bearer ${user.token}` } }
-		);
+		try {
+			const response = await API.post(
+				'/bets',
+				{
+					bet: [...games],
+				},
+				{ headers: { Authorization: `Bearer ${user.token}` } }
+			);
 
-		if (response.status === 200) {
-			return handleSuccessResponse();
-		}
-		if (response.status === 401) {
-			return toast.error('Não Autorizado');
+			if (response.status === 200) {
+				return handleSuccessResponse();
+			}
+		} catch (err) {
+			if (err.response.status === 401) {
+				return toast.error('Não Autorizado');
+			}
+			toast.error(err.message, { autoClose: false });
 		}
 	};
 

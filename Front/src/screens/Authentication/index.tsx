@@ -55,11 +55,11 @@ const Authentication: React.FC = () => {
 				toast.success('Uma mensagem foi enviada para seu email');
 			}
 		} catch (err) {
-			console.log({ ...err });
 			if (err.response.status === 403) {
 				setError('Email não cadastrado');
 				return toast.error('Verifique o email digitado');
 			}
+			toast.error(err.message, { autoClose: false });
 		}
 	};
 
@@ -118,7 +118,7 @@ const Authentication: React.FC = () => {
 				return toast.error('Email já cadastrado');
 			} else {
 				setError('Ocorreu um erro');
-				return toast.error('Ocorreu um erro');
+				return toast.error(err.message, { autoClose: false });
 			}
 		}
 	};
@@ -143,6 +143,7 @@ const Authentication: React.FC = () => {
 				handleErrorResponse();
 				return;
 			}
+			toast.error(err.message, { autoClose: false });
 		}
 	};
 

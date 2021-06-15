@@ -9,6 +9,7 @@ import { EmptyListMessage } from './styles';
 
 import GamePlayedModel from '../../models/gamePlayed';
 import API from '../../API';
+import { toast } from 'react-toastify';
 
 const RecentGamesList: React.FC = () => {
 	const [allGamesPlayed, setAllGamesPlayed] = useState<GamePlayedModel>([]);
@@ -21,11 +22,18 @@ const RecentGamesList: React.FC = () => {
 
 	useEffect(() => {
 		(async () => {
-			const response = await API.get(url, {
-				headers: { Authorization: `Bearer ${user.token}` },
-			});
-			if (response.status === 200) {
-				setAllGamesPlayed(response.data.data);
+			try {
+				const response = await API.get(url, {
+					headers: { Authorization: `Bearer ${user.token}` },
+				});
+				if (response.status === 200) {
+					setAllGamesPlayed(response.data.data);
+				}
+			} catch (err) {
+				if (err.response.status === 401) {
+					return toast.error('Não Autorizado');
+				}
+				toast.error(err.message, { autoClose: false });
 			}
 		})();
 	}, [user, url]);
