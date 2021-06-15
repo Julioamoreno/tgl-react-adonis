@@ -8,6 +8,7 @@ import cartGame from './reducers/cartGame';
 import cartTotal from './reducers/cartTotal';
 import authentication from './reducers/authentication';
 import gamesAvailable from './reducers/gamesAvailable';
+import loading from './reducers/loading';
 
 const store = configureStore({
 	reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
 		cartTotal: cartTotal.reducer,
 		authentication: authentication.reducer,
 		gamesAvailable: gamesAvailable.reducer,
+		loading: loading.reducer,
 	},
 });
 
@@ -32,5 +34,6 @@ export const cartGameAction = cartGame.actions;
 export const cartTotalAction = cartTotal.actions;
 export const authenticationAction = authentication.actions;
 export const gamesAvailableAction = gamesAvailable.actions;
+export const loadingAction = loading.actions;
 
 export default store;

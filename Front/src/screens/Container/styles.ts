@@ -10,6 +10,7 @@ export const Content = styled.div`
 	max-width: 1080px;
 	margin-top: 20px;
 	display: flex;
+	/* flex-direction: column; */
 	justify-content: space-between;
 	flex-wrap: wrap;
 	align-content: flex-end;
