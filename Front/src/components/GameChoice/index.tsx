@@ -10,7 +10,7 @@ import { Filter, GameChoiceContainer } from './styles';
 
 const GameChoice: React.FC = () => {
 	const dispatch = useDispatch();
-	const { type } = useSelector((state: State) => state.gamePlayed);
+	const { id } = useSelector((state: State) => state.gamePlayed);
 
 	const selectGameHandle = (game: GameModel) => {
 		dispatch(gameSelectedAction.setGameSelected({ game: game.type }));
@@ -28,7 +28,7 @@ const GameChoice: React.FC = () => {
 			<p>Choose a game</p>
 			<Filter>
 				<GameButtonsList
-					selectedButton={type}
+					selectedButton={id}
 					selectGameHandle={selectGameHandle}
 				/>
 			</Filter>

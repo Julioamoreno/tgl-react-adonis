@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface SelectedGameState {
-	type?: null | string;
+	id?: null | number;
 }
 
 const initialState = { type: '' } as SelectedGameState;
@@ -11,11 +11,11 @@ const slice = createSlice({
 	initialState,
 	reducers: {
 		setGame(state, action) {
-			if (state.type === action.payload.type) {
-				state.type = '';
+			if (state.id === action.payload.type) {
+				state.id = null;
 				return;
 			}
-			state.type = action.payload.type;
+			state.id = action.payload.id;
 		},
 	},
 });

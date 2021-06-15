@@ -20,14 +20,14 @@ import {
 const RecentGamesBar: React.FC = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const gameType = useSelector((state: State) => state.recents.type) || '';
+	const gameType = useSelector((state: State) => state.recents.id) || null;
 
 	const newBet = () => {
 		history.push('/newbet');
 	};
 
 	const selectGameHandle = (game: GameModel) => {
-		dispatch(recentsGameSelectedAction.setGame({ type: game.type }));
+		dispatch(recentsGameSelectedAction.setGame({ id: game.id }));
 	};
 
 	return (

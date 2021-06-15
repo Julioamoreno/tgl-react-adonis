@@ -12,25 +12,23 @@ import API from '../../API';
 
 const RecentGamesList: React.FC = () => {
 	const [allGamesPlayed, setAllGamesPlayed] = useState<GamePlayedModel>([]);
-	const gameType = useSelector((state: State) => state.recents.type);
+	const [url] = useState('/bets');
+	const gameType = useSelector((state: State) => state.recents.id);
 	const { user } = useSelector((state: State) => state.authentication);
-	// const allGamesPlayed: GamePlayedModel = useSelector(
-	// 	(state: State) => state.recentGames
-	// );
 	const [gamePlayedFiltered, setGamePlayedFiltered] = useState<GamePlayedModel>(
 		[]
 	);
 
 	useEffect(() => {
 		(async () => {
-			const response = await API.get('/bets', {
+			const response = await API.get(url, {
 				headers: { Authorization: `Bearer ${user.token}` },
 			});
 			if (response.status === 200) {
 				setAllGamesPlayed(response.data.data);
 			}
 		})();
-	}, [user]);
+	}, [user, url]);
 
 	useEffect(() => {
 		if (!gameType) {
@@ -38,7 +36,7 @@ const RecentGamesList: React.FC = () => {
 			return;
 		}
 		const array = allGamesPlayed.filter(
-			(gamePlayed) => gameType === gamePlayed.game.type
+			(gamePlayed) => gameType === gamePlayed.game.id
 		);
 		setGamePlayedFiltered(array);
 	}, [gameType, allGamesPlayed]);
