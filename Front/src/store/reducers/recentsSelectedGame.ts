@@ -11,7 +11,7 @@ const slice = createSlice({
 	initialState,
 	reducers: {
 		setGame(state, action) {
-			if (state.id === action.payload.type) {
+			if (state.id === action.payload.id) {
 				state.id = null;
 				return;
 			}

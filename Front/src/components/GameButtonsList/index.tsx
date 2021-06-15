@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { GameButtonListGrid, GameType } from './styles';
 
 const GameButtonsList: React.FC<{
-	selectedButton: null | number;
+	selectedButton: number;
 	selectGameHandle: (game: GameModel) => void;
 }> = (props) => {
 	const allGames = useSelector((state: State) => state.gamesAvailable);

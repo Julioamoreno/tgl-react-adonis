@@ -20,7 +20,7 @@ import {
 const RecentGamesBar: React.FC = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const gameType = useSelector((state: State) => state.recents.id) || null;
+	const gameType = useSelector((state: State) => state.recents.id);
 
 	const newBet = () => {
 		history.push('/newbet');
@@ -36,7 +36,7 @@ const RecentGamesBar: React.FC = () => {
 			<Filter>
 				<p>Filters</p>
 				<GameButtonsList
-					selectedButton={gameType}
+					selectedButton={gameType!}
 					selectGameHandle={selectGameHandle}
 				/>
 			</Filter>
