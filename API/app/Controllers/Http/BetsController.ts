@@ -7,7 +7,7 @@ import Event from '@ioc:Adonis/Core/Event'
 export default class BetsController {
   public async index({ request, auth }: HttpContextContract) {
     const { page } = request.qs()
-    const bet = await Bet.query().where('user_id', auth.user!.id).paginate(page)
+    const bet = await Bet.query().where('user_id', auth.user!.id).preload('game').paginate(page)
 
     return bet
   }
@@ -16,12 +16,19 @@ export default class BetsController {
     await request.validate(CreateBet)
     try {
       let data = request.input('bet')
-      data = data.map((bet) => {
-        bet.user_id = auth.user!.id
-        return bet
+      data = await data.map((bet) => ({
+        user_id: auth.user!.id,
+        game_id: bet.game_id,
+        numbers: bet.numbers,
+        price: bet.price,
+      }))
+
+      const bets = await Bet.createMany(data).then(() => {
+        return Bet.query()
+          .preload('game')
+          .withScopes((scopes) => scopes.owner)
       })
 
-      const bets = await Bet.createMany(data)
       Event.emit('new:bet', { bets })
 
       return bets
@@ -33,6 +40,7 @@ export default class BetsController {
   public async show({ params, auth }: HttpContextContract) {
     const bet = await Bet.query()
       .where('id', params.id)
+      .preload('game')
       .withScopes((scopes) => scopes.owner(auth.user!))
       .firstOrFail()
 
