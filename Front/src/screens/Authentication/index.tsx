@@ -16,6 +16,7 @@ import CardRegistration from '../../components/CardRegistration';
 import CardResetPassword from '../../components/CardResetPassword';
 
 import User from '../../models/user';
+import RecentGamesPlayedModel from '../../models/gamePlayed';
 
 import { AuthenticationGrid, Col8, Title, ButtonFor, Lottery } from './styles';
 
@@ -68,8 +69,8 @@ const Authentication: React.FC = () => {
 			dispatch(gamesAvailableAction.saveGames({ games: response.data }));
 	};
 
-	const saveRecentsBets = async (bets: Array<{}>) => {
-		bets.map((bet) => dispatch(recentGamesPlayedAction.saveGames(bet)));
+	const saveRecentsBets = async (bets: RecentGamesPlayedModel) => {
+		dispatch(recentGamesPlayedAction.saveGames([...bets]));
 	};
 
 	const handleSuccessResponse = async (response: AxiosResponse) => {

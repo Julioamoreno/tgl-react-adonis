@@ -1,7 +1,6 @@
 import React from 'react';
 
 import GameCartModel from '../../models/gameCart';
-import RecentGamesPlayedModel from '../../models/gamePlayed';
 import NewGamePlayed from '../NewGamePlayed';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -35,22 +34,9 @@ const Cart: React.FC = () => {
 		dispatch(cartTotalAction.decrement({ price }));
 	};
 
-	const handleSuccessResponse = async (games: RecentGamesPlayedModel) => {
-		games.map((game) => {
-			dispatch(
-				recentGamesPlayedAction.saveGames({
-					numbers: game.numbers,
-					created_at: game.created_at,
-					price: game.price,
-					id: game.id,
-					game: {
-						type: game.game.type,
-						color: game.game.color,
-					},
-				})
-			);
-			return dispatch(cartGameAction.clearCart());
-		});
+	const handleSuccessResponse = async () => {
+		dispatch(recentGamesPlayedAction.reset());
+		dispatch(cartGameAction.clearCart());
 		dispatch(cartTotalAction.clear());
 		toast.success('Jogo salvo com sucesso.');
 	};
@@ -74,7 +60,7 @@ const Cart: React.FC = () => {
 		);
 
 		if (response.status === 200) {
-			return handleSuccessResponse(response.data);
+			return handleSuccessResponse();
 		}
 		if (response.status === 401) {
 			return toast.error('Não Autorizado');

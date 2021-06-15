@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import RecentGamesPlayedModel from '../../models/gamePlayed';
 
@@ -11,20 +11,24 @@ const slice = createSlice({
 	name: 'RecentGamesPlayed',
 	initialState,
 	reducers: {
-		saveGames(state, action) {
-			state.push({
-				numbers: action.payload.numbers,
-				created_at: action.payload.created_at,
-				price: action.payload.price,
-				id: action.payload.game_id,
-				game: {
-					type: action.payload.game.type,
-					color: action.payload.game.color,
-				},
-			});
+		saveGames(state, action: PayloadAction<RecentGamesPlayedModel>) {
+			action.payload.map((game) =>
+				state.push({
+					numbers: game.numbers,
+					created_at: game.created_at,
+					price: game.price,
+					id: game.id,
+					game: {
+						type: game.game.type,
+						color: game.game.color,
+						id: game.game.id,
+					},
+				})
+			);
 			localStorage.setItem('@tgl:recentGames', JSON.stringify(state));
 			localStorage.setItem('@tgl:cart', JSON.stringify([]));
 		},
+		reset: () => initialState,
 	},
 });
 

@@ -24,8 +24,9 @@ const slice = createSlice({
 			state.splice(action.payload.id, 1);
 			localStorage.setItem('@tgl:cart', JSON.stringify(state));
 		},
-		clearCart(state) {
-			state.shift();
+		clearCart: () => {
+			localStorage.setItem('@tgl:cart', JSON.stringify([]));
+			return initialState;
 		},
 	},
 });

@@ -7,6 +7,7 @@ interface GamePlayed
 		game: {
 			type: string;
 			color: string;
+			id: number;
 		};
 	}> {}
 
