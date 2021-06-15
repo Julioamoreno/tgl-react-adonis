@@ -6,9 +6,11 @@ import { Elipse } from './styles';
 import { gamePlayedAction } from '../../store/index';
 
 import ElipseNumber from '../ElipseNumber';
+import ListNumbersLoader from '../ListNumbersLoader';
 
 const ListNumbers: React.FC = () => {
 	const { range } = useSelector((state: State) => state.gamePlayed);
+	const loading = useSelector((state: State) => state.loading);
 	const numbers = useSelector(
 		(state: State) => state.gamePlayed.numbersSelected
 	);
@@ -20,7 +22,9 @@ const ListNumbers: React.FC = () => {
 
 	return (
 		<Elipse>
-			{range &&
+			{loading && <ListNumbersLoader />}
+			{!loading &&
+				range &&
 				Array.apply(1, Array(range)).map((_x, idx) => (
 					<ElipseNumber
 						key={idx}

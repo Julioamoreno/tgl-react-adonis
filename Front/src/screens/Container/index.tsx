@@ -7,13 +7,18 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import API from '../../API';
-import { gamesAvailableAction, gamePlayedAction } from '../../store';
+import {
+	gamesAvailableAction,
+	gamePlayedAction,
+	loadingAction,
+} from '../../store';
 
 import { Container, Content } from './styles';
 
 const NavbarScreen: React.FC = (props) => {
 	const dispatch = useDispatch();
 	useEffect(() => {
+		dispatch(loadingAction.waitLoading());
 		(async () => {
 			const response = await API.get('/games');
 			if (response.status === 200) {
@@ -24,6 +29,7 @@ const NavbarScreen: React.FC = (props) => {
 						numbersSelected: [],
 					})
 				);
+				dispatch(loadingAction.stopLoading());
 			}
 		})();
 	}, [dispatch]);

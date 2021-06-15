@@ -1,19 +1,45 @@
-import React from 'react';
-import GameModel from '../../models/game';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { State, loadingAction } from '../../store';
 
-import { State } from '../../store';
-import { useSelector } from 'react-redux';
+import API from '../../API';
+
+import GameModel from '../../models/game';
+import AvailableGamesModel from '../../models/games';
 
 import { GameButtonListGrid, GameType } from './styles';
+import GameButtonLoader from '../GameButtonLoader';
 
 const GameButtonsList: React.FC<{
 	selectedButton: number;
 	selectGameHandle: (game: GameModel) => void;
 }> = (props) => {
-	const allGames = useSelector((state: State) => state.gamesAvailable);
+	const [allGames, setAllGames] = useState<AvailableGamesModel>([]);
+	const loading = useSelector((state: State) => state.loading);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(loadingAction.waitLoading());
+		(async () => {
+			try {
+				const response = await API.get('/games');
+
+				if (response.status === 200) {
+					dispatch(loadingAction.stopLoading);
+					return setAllGames(response.data);
+				}
+			} catch (err) {
+				return toast.error(err.message, { autoClose: false });
+			}
+		})();
+	}, []);
 	return (
 		<GameButtonListGrid>
-			{allGames &&
+			{loading && <GameButtonLoader />}
+			{loading && <GameButtonLoader />}
+			{!loading &&
+				allGames &&
 				allGames.map((game, idx) => (
 					<GameType
 						key={idx}
