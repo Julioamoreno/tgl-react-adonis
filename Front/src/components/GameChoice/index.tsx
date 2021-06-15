@@ -14,6 +14,7 @@ const GameChoice: React.FC = () => {
 
 	const selectGameHandle = (game: GameModel) => {
 		dispatch(gameSelectedAction.setGameSelected({ game: game.type }));
+		console.log(game);
 		dispatch(
 			gamePlayedAction.setGamePlayed({
 				game,

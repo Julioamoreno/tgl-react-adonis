@@ -1,6 +1,7 @@
 import React from 'react';
 
 import GameCartModel from '../../models/gameCart';
+import RecentGamesPlayedModel from '../../models/gamePlayed';
 import NewGamePlayed from '../NewGamePlayed';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -10,6 +11,8 @@ import {
 	cartTotalAction,
 	recentGamesPlayedAction,
 } from '../../store/index';
+
+import API from '../../API';
 
 import arrowIcon from '../../assets/icons/arrow-right-green-light.svg';
 import {
@@ -23,6 +26,7 @@ import {
 const Cart: React.FC = () => {
 	const dispatch = useDispatch();
 	const games: GameCartModel = useSelector((state: State) => state.cartGame);
+	const { user } = useSelector((state: State) => state.authentication);
 	const { total } = useSelector((state: State) => state.cartTotal);
 	const { min_cart_value } = useSelector((state: State) => state.gamePlayed);
 
@@ -31,7 +35,27 @@ const Cart: React.FC = () => {
 		dispatch(cartTotalAction.decrement({ price }));
 	};
 
-	const saveGamesCart = () => {
+	const handleSuccessResponse = async (games: RecentGamesPlayedModel) => {
+		games.map((game) => {
+			dispatch(
+				recentGamesPlayedAction.saveGames({
+					numbers: game.numbers,
+					created_at: game.created_at,
+					price: game.price,
+					id: game.id,
+					game: {
+						type: game.game.type,
+						color: game.game.color,
+					},
+				})
+			);
+			return dispatch(cartGameAction.clearCart());
+		});
+		dispatch(cartTotalAction.clear());
+		toast.success('Jogo salvo com sucesso.');
+	};
+
+	const saveGamesCart = async () => {
 		const minValue = min_cart_value.toLocaleString('pt-BR', {
 			minimumFractionDigits: 2,
 			style: 'currency',
@@ -41,27 +65,20 @@ const Cart: React.FC = () => {
 		if (total < min_cart_value) {
 			return toast.error(`Valor mínimo para salvar é ${minValue}`);
 		}
-		const date = new Date();
-		const dateNow = `${date.getDate().toString().padStart(2, '0')}/${(
-			date.getMonth() + 1
-		)
-			.toString()
-			.padStart(2, '0')}/${date.getFullYear()}`;
+		const response = await API.post(
+			'/bets',
+			{
+				bet: [...games],
+			},
+			{ headers: { Authorization: `Bearer ${user.token}` } }
+		);
 
-		games.map((game) => {
-			dispatch(
-				recentGamesPlayedAction.saveGames({
-					selectedNumbers: game.selectedNumbers,
-					date: dateNow,
-					type: game.type,
-					price: game.price,
-					color: game.color,
-				})
-			);
-			return dispatch(cartGameAction.clearCart());
-		});
-		dispatch(cartTotalAction.clear());
-		toast.success('Jogo salvo com sucesso.');
+		if (response.status === 200) {
+			return handleSuccessResponse(response.data);
+		}
+		if (response.status === 401) {
+			return toast.error('Não Autorizado');
+		}
 	};
 
 	return (
@@ -75,7 +92,7 @@ const Cart: React.FC = () => {
 							key={idx}
 							color={game.color}
 							type={game.type}
-							gameNumbers={game.selectedNumbers}
+							numbers={game.numbers}
 							gamePrice={game.price}
 							deleteGame={() => deleteGame(idx, game.price)}
 						/>

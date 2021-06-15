@@ -16,6 +16,7 @@ const slice = createSlice({
 				numbers: action.payload.numbers,
 				created_at: action.payload.created_at,
 				price: action.payload.price,
+				id: action.payload.game_id,
 				game: {
 					type: action.payload.game.type,
 					color: action.payload.game.color,

@@ -1,12 +1,11 @@
 interface GameCart
 	extends Array<{
-		selectedNumbers: Array<string>;
-		date: string;
+		id: number;
+		numbers: Array<string>;
 		type: string;
 		price: number;
 		color: string;
 		total: number;
-		complete: boolean;
 		minCartValue: number;
 	}> {}
 

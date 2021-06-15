@@ -14,7 +14,7 @@ import {
 const NewGamePlayed: React.FC<{
 	color: string;
 	type: string;
-	gameNumbers: Array<string>;
+	numbers: Array<string>;
 	gamePrice: number;
 	deleteGame: () => void;
 }> = (props) => {
@@ -46,7 +46,7 @@ const NewGamePlayed: React.FC<{
 			</TrashCol>
 			<Col color={props?.color}>
 				<Row>
-					<ListNumber>{props.gameNumbers.join(', ')}</ListNumber>
+					<ListNumber>{props.numbers}</ListNumber>
 				</Row>
 
 				<Row></Row>

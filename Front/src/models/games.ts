@@ -1,5 +1,6 @@
 interface Games
 	extends Array<{
+		id: number;
 		type: string;
 		description: string;
 		range: number;

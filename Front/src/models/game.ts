@@ -1,4 +1,5 @@
 interface Game {
+	id: number;
 	type: string;
 	description: string;
 	range: number;

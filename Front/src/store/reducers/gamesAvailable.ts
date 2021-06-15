@@ -19,6 +19,7 @@ const slice = createSlice({
 			if (state.length === 0) {
 				action.payload.games.map((game: Game) =>
 					state.push({
+						id: game.id,
 						type: game.type,
 						description: game.description,
 						range: game.range,
@@ -32,6 +33,7 @@ const slice = createSlice({
 				state = [];
 				action.payload.games.map((game: Game) =>
 					state.push({
+						id: game.id,
 						type: game.type,
 						description: game.description,
 						range: game.range,

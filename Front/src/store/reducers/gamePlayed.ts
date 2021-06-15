@@ -4,6 +4,7 @@ interface StateGameSelected {
 	numbersSelected: Array<string>;
 	typeMessage: string | null;
 	message: string | null;
+	id: number;
 	type: null | string;
 	price: number;
 	max_number: number;
@@ -53,12 +54,7 @@ const slice = createSlice({
 	initialState,
 	reducers: {
 		setGamePlayed(state, action) {
-			// const isEmpty = !state.type;
-			// if (isEmpty) {
-			// 	state.message = 'Selecione um tipo de jogo';
-			// 	state.typeMessage = 'aviso';
-			// 	return;
-			// }
+			state.id = action.payload.game.id;
 			state.type = action.payload.game.type;
 			state.price = action.payload.game.price;
 			state.range = action.payload.game.range;

@@ -10,13 +10,12 @@ const slice = createSlice({
 	reducers: {
 		newItemCart(state, action) {
 			state.push({
+				game_id: action.payload.id,
 				type: action.payload.type,
-				selectedNumbers: action.payload.numbersSelected,
+				numbers: action.payload.numbers,
 				price: action.payload.price,
-				complete: action.payload.complete,
 				color: action.payload.color,
 				total: action.payload.total,
-				date: action.payload.date,
 				minCartValue: action.payload.minCartValue,
 			});
 			localStorage.setItem('@tgl:cart', JSON.stringify(state));

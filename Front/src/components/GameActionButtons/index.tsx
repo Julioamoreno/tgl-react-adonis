@@ -37,8 +37,9 @@ const GameActionButtons: React.FC = (props) => {
 		}
 		dispatch(
 			cartGameAction.newItemCart({
+				id: game.id,
 				type: game.type,
-				numbersSelected: game.numbersSelected,
+				numbers: game.numbersSelected.join(', '),
 				price: game.price,
 				color: game.color,
 				minCartValue: game.min_cart_value,
