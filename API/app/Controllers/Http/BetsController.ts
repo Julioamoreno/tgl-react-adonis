@@ -17,17 +17,13 @@ export default class BetsController {
     try {
       let data = request.input('bet')
       data = await data.map((bet) => ({
-        user_id: auth.user!.id,
+        user_id: auth.user?.$attributes.id,
         game_id: bet.game_id,
         numbers: bet.numbers,
         price: bet.price,
       }))
 
-      const bets = await Bet.createMany(data).then(() => {
-        return Bet.query()
-          .preload('game')
-          .withScopes((scopes) => scopes.owner)
-      })
+      const bets = await Bet.createMany(data)
 
       Event.emit('new:bet', { bets })
 
