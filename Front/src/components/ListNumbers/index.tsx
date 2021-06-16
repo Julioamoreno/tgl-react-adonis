@@ -7,9 +7,12 @@ import { gamePlayedAction } from '../../store/index';
 
 import ElipseNumber from '../ElipseNumber';
 import ListNumbersLoader from '../ListNumbersLoader';
+import { toast } from 'react-toastify';
 
 const ListNumbers: React.FC = () => {
-	const { range } = useSelector((state: State) => state.gamePlayed);
+	const { range, max_number, numbersSelected } = useSelector(
+		(state: State) => state.gamePlayed
+	);
 	const loading = useSelector((state: State) => state.loading);
 	const numbers = useSelector(
 		(state: State) => state.gamePlayed.numbersSelected
@@ -18,6 +21,10 @@ const ListNumbers: React.FC = () => {
 
 	const selectNumberHandle = (number: string) => {
 		dispatch(gamePlayedAction.setNumberSelected({ numbersSelected: number }));
+		const gameIsComplete = max_number === numbersSelected.length;
+		if (gameIsComplete && !numbersSelected.includes(number)) {
+			toast.warn('O jogo já está completo.');
+		}
 	};
 
 	return (
