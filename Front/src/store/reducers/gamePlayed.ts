@@ -13,9 +13,9 @@ interface StateGameSelected {
 }
 
 const gamePlayedLocalString = localStorage.getItem('@tgl:gamePlayed');
-let initialState;
+let initialState: StateGameSelected;
 const gamePlayedLocal = JSON.parse(gamePlayedLocalString!) as StateGameSelected;
-if (gamePlayedLocal) {
+if (!!gamePlayedLocal) {
 	initialState = gamePlayedLocal;
 } else {
 	const initialGameAvailable = localStorage.getItem('@tgl:availableGames');
@@ -98,6 +98,10 @@ const slice = createSlice({
 		},
 		clearGame(state) {
 			state.numbersSelected = [];
+			localStorage.setItem('@tgl:gamePlayed', JSON.stringify(state));
+		},
+		reset: () => {
+			return {} as StateGameSelected;
 		},
 	},
 });
