@@ -44,7 +44,7 @@ const RecentGamesList: React.FC = () => {
 				toast.error(err.message, { autoClose: false });
 			}
 		})();
-	}, [user, url]);
+	}, [user, url, dispatch]);
 
 	useEffect(() => {
 		if (!gameType) {

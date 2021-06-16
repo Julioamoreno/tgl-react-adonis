@@ -33,7 +33,7 @@ const GameButtonsList: React.FC<{
 				return toast.error(err.message, { autoClose: false });
 			}
 		})();
-	}, []);
+	}, [dispatch]);
 	return (
 		<GameButtonListGrid>
 			{loading && <GameButtonLoader />}

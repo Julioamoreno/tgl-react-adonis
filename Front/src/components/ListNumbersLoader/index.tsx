@@ -5,8 +5,8 @@ import { Elipse } from './styles';
 
 const ListNumbersLoader: React.FC = (props) => (
 	<>
-		{Array.apply(1, Array(30)).map(() => (
-			<Elipse>
+		{Array.apply(1, Array(30)).map((_value, idx) => (
+			<Elipse key={idx}>
 				<ContentLoader
 					speed={2}
 					width={60}
