@@ -2,8 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface StateGameSelected {
 	numbersSelected: Array<string>;
-	typeMessage: string | null;
-	message: string | null;
 	id: number;
 	type: null | string;
 	price: number;
@@ -66,7 +64,6 @@ const slice = createSlice({
 			localStorage.setItem('@tgl:gamePlayed', JSON.stringify(state));
 		},
 		setNumberSelected(state, action) {
-			const remaining = state.max_number - state.numbersSelected.length;
 			if (
 				state.max_number > state.numbersSelected.length &&
 				!state.numbersSelected.includes(action.payload.numbersSelected)
@@ -82,29 +79,11 @@ const slice = createSlice({
 					1
 				);
 				localStorage.setItem('@tgl:gamePlayed', JSON.stringify(state));
-			} else if (
-				remaining === 0 &&
-				!state.numbersSelected.includes(action.payload.numbersSelected)
-			) {
-				state.message = 'O jogo já está completo';
-				state.typeMessage = 'aviso';
 			}
 		},
 		completeGame(state) {
-			const isEmpty = !state.type;
-			if (isEmpty) {
-				state.message = 'Selecione um tipo de jogo';
-				state.typeMessage = 'aviso';
-				return;
-			}
 			const numbersAvailable = getNumberAvailable(state);
 			const remaining = state.max_number - state.numbersSelected.length;
-			if (remaining === 0) {
-				state.message = 'O jogo já está completo';
-				state.typeMessage = 'aviso';
-				return;
-			}
-
 			let values = [];
 			let i = 1;
 			while (i <= remaining) {
@@ -119,14 +98,6 @@ const slice = createSlice({
 		},
 		clearGame(state) {
 			state.numbersSelected = [];
-		},
-		setMessage(state, action) {
-			state.message = action.payload.message;
-			state.typeMessage = action.payload.typeMessage;
-		},
-		clearError(state) {
-			state.message = null;
-			state.typeMessage = null;
 		},
 	},
 });
