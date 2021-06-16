@@ -7,6 +7,7 @@ import NewBetScreen from './screens/NewBet';
 import AuthenticationScreen from './screens/Authentication';
 import LogoutScreen from './screens/logout';
 import Footer from './components/Footer';
+import NotFoundScreen from './screens/404';
 
 function App() {
 	return (
@@ -16,6 +17,7 @@ function App() {
 				<ProtectedRoute path='/newbet' component={NewBetScreen} />
 				<Route path='/login' component={AuthenticationScreen} />
 				<ProtectedRoute path='/logout' component={LogoutScreen} />
+				<Route path='*' component={NotFoundScreen} />
 			</Switch>
 			<Footer />
 		</Router>
