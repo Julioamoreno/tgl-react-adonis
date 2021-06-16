@@ -64,6 +64,9 @@ const Cart: React.FC = () => {
 				return handleSuccessResponse();
 			}
 		} catch (err) {
+			if (err.response === undefined) {
+				return toast.error(err.message);
+			}
 			if (err.response.status === 401) {
 				return toast.error('Não Autorizado');
 			}
