@@ -30,7 +30,7 @@ const GameButtonsList: React.FC<{
 					return setAllGames(response.data);
 				}
 			} catch (err) {
-				return toast.error(err.message, { autoClose: false });
+				return toast.error(err.message);
 			}
 		})();
 	}, [dispatch]);

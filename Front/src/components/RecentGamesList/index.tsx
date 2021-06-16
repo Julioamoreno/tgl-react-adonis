@@ -12,7 +12,10 @@ import GamePlayedModel from '../../models/gamePlayed';
 import API from '../../API';
 import Loader from '../RecentGamesLoader';
 
-const RecentGamesList: React.FC = () => {
+const RecentGamesList: React.FC<{
+	loadingError: boolean;
+	setLoadingError: (value: boolean) => void;
+}> = (props) => {
 	const dispatch = useDispatch();
 	const [allGamesPlayed, setAllGamesPlayed] = useState<GamePlayedModel>([]);
 	const [url] = useState('/bets');
@@ -35,13 +38,15 @@ const RecentGamesList: React.FC = () => {
 					setAllGamesPlayed(response.data.data);
 				}
 			} catch (err) {
+				dispatch(loadingAction.stopLoading());
+				props.setLoadingError(true);
 				if (err.response === undefined) {
-					return toast.error(err.message, { autoClose: false });
+					return;
 				}
 				if (err.response.status === 401) {
 					return toast.error('Não Autorizado');
 				}
-				toast.error(err.message, { autoClose: false });
+				toast.error(err.message);
 			}
 		})();
 	}, [user, url, dispatch]);
@@ -59,11 +64,16 @@ const RecentGamesList: React.FC = () => {
 	return (
 		<>
 			{loading && <Loader />}
-			{!loading && gamePlayedFiltered.length === 0 ? (
+			{!loading && !props.loadingError && gamePlayedFiltered.length === 0 && (
 				<EmptyListMessage>
 					Não existem registros para esse jogo
 				</EmptyListMessage>
-			) : null}
+			)}
+			{!loading && props.loadingError && (
+				<EmptyListMessage>
+					Não foi possível carregar as informações do servidor
+				</EmptyListMessage>
+			)}
 			{!loading &&
 				gamePlayedFiltered.map((gamePlayed, idx) => (
 					<GamePlayed

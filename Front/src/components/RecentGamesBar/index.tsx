@@ -17,7 +17,7 @@ import {
 	Arrow,
 } from './styles';
 
-const RecentGamesBar: React.FC = () => {
+const RecentGamesBar: React.FC<{ loadingError: boolean }> = (props) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const gameType = useSelector((state: State) => state.recents.id);
@@ -34,11 +34,15 @@ const RecentGamesBar: React.FC = () => {
 		<RecentBarContainer>
 			<TitleBar>Recent Games</TitleBar>
 			<Filter>
-				<p>Filters</p>
-				<GameButtonsList
-					selectedButton={gameType!}
-					selectGameHandle={selectGameHandle}
-				/>
+				{!props.loadingError && (
+					<>
+						<p>Filters</p>
+						<GameButtonsList
+							selectedButton={gameType!}
+							selectGameHandle={selectGameHandle}
+						/>
+					</>
+				)}
 			</Filter>
 
 			<NewBetButton onClick={newBet}>
