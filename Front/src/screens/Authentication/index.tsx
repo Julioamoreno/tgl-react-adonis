@@ -55,6 +55,9 @@ const Authentication: React.FC = () => {
 				toast.success('Uma mensagem foi enviada para seu email');
 			}
 		} catch (err) {
+			if (err.response === undefined) {
+				return toast.error(err.message, { autoClose: false });
+			}
 			if (err.response.status === 403) {
 				setError('Email não cadastrado');
 				return toast.error('Verifique o email digitado');
@@ -97,7 +100,10 @@ const Authentication: React.FC = () => {
 	) => {
 		const regexEmail = /\S+@\S+\.\S+/;
 		const isValidEmail = regexEmail.test(email);
-		if (!name || !email || !password || !isValidEmail) {
+		if (!isValidEmail) {
+			return toast.error('O email não é válido, verifique o campo de email');
+		}
+		if (!name || !email || !password) {
 			setError('Verifique os campos digitados');
 			return toast.error('Verifique os campos digitados');
 		}
@@ -113,6 +119,9 @@ const Authentication: React.FC = () => {
 				handleSuccessResponse(response);
 			}
 		} catch (err) {
+			if (err.response === undefined) {
+				return toast.error(err.message, { autoClose: false });
+			}
 			if (err.response.status === 422) {
 				setError(err.response.data.errors[0].message);
 				return toast.error('Email já cadastrado');
@@ -126,7 +135,10 @@ const Authentication: React.FC = () => {
 	const handleLogin = async (email: string, password: string) => {
 		const regexEmail = /\S+@\S+\.\S+/;
 		const isValidEmail = regexEmail.test(email);
-		if (!email || !password || !isValidEmail) {
+		if (!isValidEmail) {
+			return toast.error('O email não é válido, verifique o campo de email');
+		}
+		if (!email || !password) {
 			return toast.error('Verifique os campos digitados');
 		}
 		try {
@@ -139,6 +151,9 @@ const Authentication: React.FC = () => {
 				return handleSuccessResponse(response);
 			}
 		} catch (err) {
+			if (err.response === undefined) {
+				return toast.error(err.message, { autoClose: false });
+			}
 			if (err.response.status === 400) {
 				handleErrorResponse();
 				return;
